@@ -2,7 +2,7 @@ import { useMemo, useState } from "react";
 import { observer } from "mobx-react-lite";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
-import styled from "styled-components";
+import styled, {css} from "styled-components";
 
 import { posterUrl } from "../../../Common/core/images";
 import { useWatchlist } from "../../state/WatchlistContext";
@@ -40,12 +40,32 @@ const Tab = styled.button<{ $active: boolean }>`
     border-radius: 999px;
     cursor: pointer;
     font-size: 13px;
-    border: 1px solid
-        ${({ $active }) =>
-            $active ? "var(--accent, #aa3bff)" : "var(--border, #2e303a)"};
-    background: ${({ $active }) =>
-        $active ? "var(--accent, #aa3bff)" : "transparent"};
-    color: ${({ $active }) => ($active ? "#fff" : "var(--text, #9ca3af)")};
+    transition: all 0.15s ease;
+    border: 1px solid ${({ $active }) => ($active ? "var(--accent)" : "var(--border)")};
+    background: ${({ $active }) => ($active ? "var(--accent)" : "var(--surface)")};
+    color: ${({ $active }) => ($active ? "#fff" : "var(--text)")};
+    &:hover {
+        border-color: var(--accent);
+        color: ${({ $active }) => ($active ? "#fff" : "var(--accent)")};
+    }
+`;
+
+const control = css`
+    padding: 8px 12px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text-h);
+    font: inherit;
+    cursor: pointer;
+
+    html[data-theme="dark"] & { color-scheme: dark; }
+    html[data-theme="light"] & { color-scheme: light; }
+
+    &:focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: 1px;
+    }
 `;
 
 const SortControl = styled.label`
@@ -53,15 +73,9 @@ const SortControl = styled.label`
     align-items: center;
     gap: 8px;
     font-size: 14px;
+    color: var(--text);
 
-    select {
-        padding: 8px 12px;
-        border-radius: 8px;
-        border: 1px solid var(--border, #2e303a);
-        background: var(--surface, transparent);
-        color: var(--text-h, #f3f4f6);
-        font: inherit;
-    }
+    select { ${control} }
 `;
 
 const Grid = styled.ul`
@@ -69,22 +83,27 @@ const Grid = styled.ul`
     margin: 0;
     padding: 0;
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 16px;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 20px;
 `;
 
 const Entry = styled.li`
     display: flex;
-    gap: 12px;
-    padding: 12px;
-    border: 1px solid var(--border, #2e303a);
+    gap: 16px;
+    padding: 16px;
+    border: 1px solid var(--border);
     border-radius: 12px;
-    background: var(--surface, transparent);
+    background: var(--surface);
+    box-shadow: var(--shadow);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+    &:hover {
+        transform: translateY(-2px);
+    }
 `;
 
 const Poster = styled.div`
-    flex: 0 0 80px;
-    width: 80px;
+    flex: 0 0 90px;
+    width: 90px;
     aspect-ratio: 2 / 3;
     border-radius: 8px;
     overflow: hidden;
@@ -120,7 +139,7 @@ const Row = styled.div`
     align-items: center;
     gap: 8px;
     flex-wrap: wrap;
-
+    
     select {
         padding: 6px 10px;
         border-radius: 8px;
@@ -168,6 +187,27 @@ const Empty = styled.div`
     padding: 48px 24px;
     text-align: center;
     color: var(--text, #9ca3af);
+`;
+
+const StatusPicker = styled.div`
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+`;
+
+const StatusBtn = styled.button<{ $active: boolean }>`
+    padding: 5px 10px;
+    font-size: 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    border: 1px solid ${({ $active }) => ($active ? "var(--accent)" : "var(--border)")};
+    background: ${({ $active }) => ($active ? "var(--accent)" : "var(--bg)")};
+    color: ${({ $active }) => ($active ? "#fff" : "var(--text)")};
+
+    &:hover {
+        border-color: var(--accent);
+        color: ${({ $active }) => ($active ? "#fff" : "var(--accent)")};
+    }
 `;
 
 function sortEntries(entries: WatchlistEntry[], sort: SortValue) {
@@ -288,27 +328,20 @@ function WatchlistPage() {
                                         </EntryTitle>
 
                                         <Row>
-                                            <select
-                                                value={entry.status}
-                                                aria-label={t(
-                                                    "collection:watchlist.sort.label"
-                                                )}
-                                                onChange={(e) =>
-                                                    store.updateStatus(
-                                                        entry.id,
-                                                        e.target
-                                                            .value as WatchlistStatus
-                                                    )
-                                                }
-                                            >
+                                            
+                                                <StatusPicker>
                                                 {WATCHLIST_STATUSES.map((s) => (
-                                                    <option key={s} value={s}>
-                                                        {t(
-                                                            `collection:watchlist.status.${s}`
-                                                        )}
-                                                    </option>
+                                                    <StatusBtn
+                                                        key={s}
+                                                        type="button"
+                                                        $active={entry.status === s}
+                                                        onClick={() => store.updateStatus(entry.id, s)}
+                                                    >
+                                                        {t(`collection:watchlist.status.${s}`)}
+                                                    </StatusBtn>
                                                 ))}
-                                            </select>
+                                            </StatusPicker>
+                                            
                                             <RemoveButton
                                                 type="button"
                                                 onClick={() =>
