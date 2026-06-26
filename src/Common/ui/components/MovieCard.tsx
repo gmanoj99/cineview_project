@@ -1,20 +1,67 @@
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import styled from "styled-components";
 
 import { posterUrl } from "../../core/images";
 import type { MediaItem } from "../../data/tmdbSchemas";
+import WatchlistButton from "../../../Collection/ui/components/WatchlistButton";
 
 interface MovieCardProps {
     item: MediaItem;
-    isInWatchlist?: boolean;
-    onToggleWatchlist?: () => void;
 }
 
-export default function MovieCard({
-    item,
-    isInWatchlist = false,
-    onToggleWatchlist,
-}: MovieCardProps) {
+const Card = styled.div`
+    flex: 0 0 160px;
+    width: 160px;
+    text-align: left;
+`;
+
+const CardLink = styled(Link)`
+    text-decoration: none;
+    color: inherit;
+`;
+
+const Poster = styled.div`
+    position: relative;
+    aspect-ratio: 2 / 3;
+    border-radius: 8px;
+    overflow: hidden;
+    background: #2a2b33;
+
+    img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+`;
+
+const Placeholder = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    font-size: 12px;
+    color: #888;
+`;
+
+const Rating = styled.span`
+    position: absolute;
+    bottom: 6px;
+    left: 6px;
+    background: rgba(0, 0, 0, 0.7);
+    color: #ffd369;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 12px;
+`;
+
+const Title = styled.p`
+    margin: 8px 0;
+    font-size: 14px;
+    color: var(--text-h, #f3f4f6);
+`;
+
+export default function MovieCard({ item }: MovieCardProps) {
     const { t } = useTranslation();
     const title = item.title ?? item.name ?? t("movies:card.untitled");
     const poster = posterUrl(item.poster_path);
@@ -22,37 +69,19 @@ export default function MovieCard({
     const to = item.media_type === "tv" ? `/tv/${item.id}` : `/movie/${item.id}`;
 
     return (
-        <div className="movie-card">
-            <Link to={to} className="movie-card__link">
-                <div className="movie-card__poster">
+        <Card>
+            <CardLink to={to}>
+                <Poster>
                     {poster ? (
                         <img src={poster} alt={title} loading="lazy" />
                     ) : (
-                        <div className="movie-card__placeholder">
-                            {t("common:state.noImage")}
-                        </div>
+                        <Placeholder>{t("common:state.noImage")}</Placeholder>
                     )}
-                    <span className="movie-card__rating">
-                        {t("common:rating", { value: rating })}
-                    </span>
-                </div>
-                <p className="movie-card__title">{title}</p>
-            </Link>
-            <button
-                type="button"
-                className={
-                    isInWatchlist
-                        ? "movie-card__wl movie-card__wl--active"
-                        : "movie-card__wl"
-                }
-                onClick={onToggleWatchlist}
-                disabled={!onToggleWatchlist}
-                aria-label={t("movies:card.toggle")}
-            >
-                {isInWatchlist
-                    ? t("movies:card.added")
-                    : t("movies:card.add")}
-            </button>
-        </div>
+                    <Rating>{t("common:rating", { value: rating })}</Rating>
+                </Poster>
+                <Title>{title}</Title>
+            </CardLink>
+            <WatchlistButton item={item} variant="card" />
+        </Card>
     );
 }

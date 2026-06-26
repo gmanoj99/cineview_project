@@ -270,3 +270,11 @@
     border: 0;
     border-radius: 8px;
 }
+
+.detail__actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 12px;
+    flex-wrap: wrap;
+}

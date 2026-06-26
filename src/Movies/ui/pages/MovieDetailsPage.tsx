@@ -11,6 +11,7 @@ import MovieCard from "../../../Common/ui/components/MovieCard";
 import TrailerModal from "../../../Common/ui/components/TrailerModal";
 import CastCarousel from "../components/CastCarousel";
 import "../../../styles/browse.css";
+import WatchlistButton from "../../../Collection/ui/components/WatchlistButton";
 
 export default function MovieDetailsPage() {
     const { movieId } = useParams();
@@ -86,15 +87,27 @@ export default function MovieDetailsPage() {
                         {movie.genres?.map((g) => g.name).join(", ")}
                     </p>
                     <p className="detail__overview">{movie.overview}</p>
-                    {trailer && (
-                        <button
-                            type="button"
-                            className="hero__cta"
-                            onClick={() => setShowTrailer(true)}
-                        >
-                            {t("common:actions.playTrailer")}
-                        </button>
-                    )}
+                    <div className="detail__actions">
+                        {trailer && (
+                            <button
+                                type="button"
+                                className="hero__cta"
+                                onClick={() => setShowTrailer(true)}
+                            >
+                                {t("common:actions.playTrailer")}
+                            </button>
+                        )}
+                        <WatchlistButton
+                            variant="detail"
+                            item={{
+                                id: movie.id,
+                                title: movie.title,
+                                poster_path: movie.poster_path,
+                                vote_average: movie.vote_average,
+                                media_type: "movie",
+                            }}
+                        />
+                    </div>
                 </div>
             </section>
 

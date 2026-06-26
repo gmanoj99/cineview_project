@@ -4,12 +4,15 @@ import { MemoryRouter } from "react-router-dom";
 
 import { AuthProvider } from "../Auth/ui/AuthContext";
 import { PreferencesProvider } from "../Preferences/state/PreferencesContext";
+import { WatchlistProvider } from "../Collection/state/WatchlistContext";
 
 export function renderWithProviders(ui: ReactElement, { route = "/" } = {}) {
     return render(
         <PreferencesProvider>
             <AuthProvider>
-                <MemoryRouter initialEntries={[route]}>{ui}</MemoryRouter>
+                <WatchlistProvider>
+                    <MemoryRouter initialEntries={[route]}>{ui}</MemoryRouter>
+                </WatchlistProvider>
             </AuthProvider>
         </PreferencesProvider>
     );

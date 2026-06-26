@@ -5,6 +5,7 @@ import { RouterProvider } from "react-router-dom";
 import "./i18n";
 import { AuthProvider } from "./Auth/ui/AuthContext";
 import { PreferencesProvider } from "./Preferences/state/PreferencesContext";
+import { WatchlistProvider } from "./Collection/state/WatchlistContext";
 import { router } from "./router/router";
 
 import "./styles/global.css";
@@ -13,7 +14,9 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
     <React.StrictMode>
         <PreferencesProvider>
             <AuthProvider>
-                <RouterProvider router={router} />
+                <WatchlistProvider>
+                    <RouterProvider router={router} />
+                </WatchlistProvider>
             </AuthProvider>
         </PreferencesProvider>
     </React.StrictMode>

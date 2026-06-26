@@ -1,7 +1,31 @@
 {
     "watchlist": {
         "title": "Watchlist",
-        "empty": "Your watchlist is empty."
+        "empty": "Your watchlist is empty.",
+        "emptyHint": "Browse movies and shows, then tap + Watchlist to start tracking.",
+        "remove": "Remove",
+        "badge": "{{count}} in watchlist",
+        "note": {
+            "placeholder": "Add a note (max 300 characters)…",
+            "remaining": "{{count}} characters left"
+        },
+        "filters": {
+            "all": "All",
+            "want": "Want to watch",
+            "watching": "Watching",
+            "completed": "Completed"
+        },
+        "sort": {
+            "label": "Sort by",
+            "dateAdded": "Date added",
+            "rating": "Rating",
+            "title": "Title"
+        },
+        "status": {
+            "want": "Want to watch",
+            "watching": "Watching",
+            "completed": "Completed"
+        }
     },
     "collections": {
         "title": "Collections",

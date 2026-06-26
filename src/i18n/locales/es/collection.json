@@ -1,7 +1,31 @@
 {
     "watchlist": {
         "title": "Mi lista",
-        "empty": "Tu lista está vacía."
+        "empty": "Tu lista está vacía.",
+        "emptyHint": "Explora películas y series y pulsa + Mi lista para empezar.",
+        "remove": "Quitar",
+        "badge": "{{count}} en mi lista",
+        "note": {
+            "placeholder": "Añade una nota (máx. 300 caracteres)…",
+            "remaining": "Quedan {{count}} caracteres"
+        },
+        "filters": {
+            "all": "Todas",
+            "want": "Quiero ver",
+            "watching": "Viendo",
+            "completed": "Completadas"
+        },
+        "sort": {
+            "label": "Ordenar por",
+            "dateAdded": "Fecha de adición",
+            "rating": "Valoración",
+            "title": "Título"
+        },
+        "status": {
+            "want": "Quiero ver",
+            "watching": "Viendo",
+            "completed": "Completadas"
+        }
     },
     "collections": {
         "title": "Colecciones",

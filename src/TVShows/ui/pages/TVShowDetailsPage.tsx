@@ -6,7 +6,7 @@ import { tmdbService } from "../../../Common/data/tmdbService";
 import { TmdbError } from "../../../Common/data/tmdbClient";
 import { useAsync } from "../../../Common/ui/hooks/useAsync";
 import "../../../styles/browse.css";
-
+import WatchlistButton from "../../../Collection/ui/components/WatchlistButton";
 export default function TVShowDetailsPage() {
     const { tvId } = useParams();
     const { t } = useTranslation();
@@ -68,6 +68,16 @@ export default function TVShowDetailsPage() {
                         {show.genres?.map((g) => g.name).join(", ")}
                     </p>
                     <p className="detail__overview">{show.overview}</p>
+                    <WatchlistButton
+                        variant="detail"
+                        item={{
+                            id: show.id,
+                            name: show.name,
+                            poster_path: show.poster_path,
+                            vote_average: show.vote_average,
+                            media_type: "tv",
+                        }}
+                    />
                 </div>
             </section>
 

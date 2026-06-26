@@ -7,6 +7,29 @@ import { useAuth } from "../../../Auth/ui/AuthContext";
 import { usePreferences } from "../../../Preferences/state/PreferencesContext";
 import { ROUTES } from "../../../router/routes";
 import "./shell.css";
+import styled from "styled-components";
+import { useWatchlist } from "../../../Collection/state/WatchlistContext";
+
+
+const NavItem = styled.span`
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+`;
+
+const Badge = styled.span`
+    margin-left: 6px;
+    min-width: 18px;
+    height: 18px;
+    padding: 0 5px;
+    border-radius: 999px;
+    background: var(--accent, #aa3bff);
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 18px;
+    text-align: center;
+`;
 
 const NAV_LINKS = [
     { to: ROUTES.HOME, key: "nav.home" },
@@ -20,6 +43,7 @@ function ShellLayout() {
     const prefs = usePreferences();
     const { t } = useTranslation();
     const navigate = useNavigate();
+    const watchlist = useWatchlist();
     const [searchTerm, setSearchTerm] = useState("");
 
     const handleSearchSubmit = (event: React.FormEvent) => {
@@ -47,7 +71,7 @@ function ShellLayout() {
                 </NavLink>
 
                 <nav className="navbar__links">
-                    {NAV_LINKS.map((link) => (
+                {NAV_LINKS.map((link) => (
                         <NavLink
                             key={link.to}
                             to={link.to}
@@ -58,7 +82,18 @@ function ShellLayout() {
                                     : "navbar__link"
                             }
                         >
-                            {t(`common:${link.key}`)}
+                            <NavItem>
+                                {t(`common:${link.key}`)}
+                                {link.to === ROUTES.WATCHLIST &&
+                                    watchlist.count > 0 && (
+                                        <Badge aria-label={t(
+                                            "collection:watchlist.badge",
+                                            { count: watchlist.count }
+                                        )}>
+                                            {watchlist.count}
+                                        </Badge>
+                                    )}
+                            </NavItem>
                         </NavLink>
                     ))}
                 </nav>
