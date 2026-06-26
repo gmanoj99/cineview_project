@@ -37,8 +37,16 @@ export const router = createBrowserRouter([
                     { path: ROUTES.HOME, element: <HomePage /> },
                     { path: ROUTES.SEARCH, element: <SearchPage /> },
                     { path: ROUTES.MOVIE_DETAILS, element: <MovieDetailsPage /> },
-                    { path: ROUTES.TV_SHOW_DETAILS, element: <TVShowDetailsPage /> },
-                    { path: ROUTES.SEASON_DETAILS, element: <SeasonDetailsPage /> },
+                    {
+                        path: ROUTES.TV_SHOW_DETAILS,
+                        element: <TVShowDetailsPage />,
+                        children: [
+                            {
+                                path: "season/:seasonNumber",
+                                element: <SeasonDetailsPage />,
+                            },
+                        ],
+                    },
                     { path: ROUTES.WATCHLIST, element: <WatchlistPage /> },
                     { path: ROUTES.COLLECTIONS, element: <CollectionsPage /> },
                     { path: ROUTES.SETTINGS, element: <SettingsPage /> },
