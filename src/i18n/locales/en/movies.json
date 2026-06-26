@@ -1,0 +1,33 @@
+{
+    "rows": {
+        "trending": "Trending",
+        "popular": "Popular",
+        "topRated": "Top Rated",
+        "upcoming": "Upcoming",
+        "filtered": "Filtered"
+    },
+    "genre": {
+        "all": "All"
+    },
+    "empty": "No titles found.",
+    "rowFailed": "{{title}} failed to load.",
+    "releaseDate": "{{date, datetime(dateStyle:medium)}}",
+    "details": {
+        "runtime": "{{count}} min",
+        "cast": "Cast",
+        "similar": "Similar",
+        "recommended": "Recommended",
+        "noCast": "No cast information.",
+        "castFailed": "Cast failed to load.",
+        "similarFailed": "Similar failed to load.",
+        "recommendationsFailed": "Recommendations failed to load.",
+        "invalidId": "Invalid movie id.",
+        "notFound": "Movie not found (404)."
+    },
+    "card": {
+        "untitled": "Untitled",
+        "add": "+ Watchlist",
+        "added": "✓ In list",
+        "toggle": "Toggle watchlist"
+    }
+}

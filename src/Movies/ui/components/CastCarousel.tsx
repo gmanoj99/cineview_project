@@ -1,3 +1,5 @@
+import { useTranslation } from "react-i18next";
+
 import { posterUrl } from "../../../Common/core/images";
 import type { CastMember } from "../../../Common/data/tmdbSchemas";
 
@@ -6,8 +8,13 @@ interface CastCarouselProps {
 }
 
 export default function CastCarousel({ cast }: CastCarouselProps) {
+    const { t } = useTranslation();
     if (cast.length === 0) {
-        return <div className="state state--empty">No cast information.</div>;
+        return (
+            <div className="state state--empty">
+                {t("movies:details.noCast")}
+            </div>
+        );
     }
     return (
         <div className="cast">
@@ -17,10 +24,14 @@ export default function CastCarousel({ cast }: CastCarouselProps) {
                     <div key={member.id} className="cast__item">
                         <div className="cast__photo">
                             {photo ? (
-                                <img src={photo} alt={member.name} loading="lazy" />
+                                <img
+                                    src={photo}
+                                    alt={member.name}
+                                    loading="lazy"
+                                />
                             ) : (
                                 <div className="movie-card__placeholder">
-                                    No photo
+                                    {t("common:state.noPhoto")}
                                 </div>
                             )}
                         </div>

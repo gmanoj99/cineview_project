@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Navigate, useLocation, useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { z } from "zod";
 
 import { useAuth } from "../AuthContext";
@@ -7,8 +8,8 @@ import { ROUTES } from "../../../router/routes";
 import "./login.css";
 
 const loginSchema = z.object({
-    username: z.string().trim().min(1, "Username is required"),
-    password: z.string().min(1, "Password is required"),
+    username: z.string().trim().min(1, "auth:errors.usernameRequired"),
+    password: z.string().min(1, "auth:errors.passwordRequired"),
 });
 
 interface FieldErrors {
@@ -22,6 +23,7 @@ interface LocationState {
 
 export default function LoginPage() {
     const { isAuthenticated, login } = useAuth();
+    const { t } = useTranslation();
     const navigate = useNavigate();
     const location = useLocation();
 
@@ -31,7 +33,6 @@ export default function LoginPage() {
     const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
     const [formError, setFormError] = useState("");
 
-    // Already authenticated → redirect away from /login.
     if (isAuthenticated) {
         return <Navigate to={ROUTES.HOME} replace />;
     }
@@ -57,7 +58,7 @@ export default function LoginPage() {
 
         const ok = login(result.data.username, result.data.password);
         if (!ok) {
-            setFormError("Invalid username or password.");
+            setFormError(t("auth:invalidCredentials"));
             return;
         }
 
@@ -67,7 +68,7 @@ export default function LoginPage() {
     return (
         <div className="login">
             <form className="login__card" onSubmit={handleSubmit} noValidate>
-                <h1 className="login__title">Sign in to CineView</h1>
+                <h1 className="login__title">{t("auth:title")}</h1>
 
                 {formError && (
                     <p className="login__error" role="alert">
@@ -76,7 +77,7 @@ export default function LoginPage() {
                 )}
 
                 <label className="login__field">
-                    <span>Username</span>
+                    <span>{t("auth:username")}</span>
                     <input
                         type="text"
                         value={username}
@@ -85,13 +86,13 @@ export default function LoginPage() {
                     />
                     {fieldErrors.username && (
                         <span className="login__field-error">
-                            {fieldErrors.username}
+                            {t(fieldErrors.username)}
                         </span>
                     )}
                 </label>
 
                 <label className="login__field">
-                    <span>Password</span>
+                    <span>{t("auth:password")}</span>
                     <div className="login__password">
                         <input
                             type={showPassword ? "text" : "password"}
@@ -106,21 +107,23 @@ export default function LoginPage() {
                             className="login__toggle"
                             onClick={() => setShowPassword((prev) => !prev)}
                             aria-label={
-                                showPassword ? "Hide password" : "Show password"
+                                showPassword
+                                    ? t("auth:hidePassword")
+                                    : t("auth:showPassword")
                             }
                         >
-                            {showPassword ? "Hide" : "Show"}
+                            {showPassword ? t("auth:hide") : t("auth:show")}
                         </button>
                     </div>
                     {fieldErrors.password && (
                         <span className="login__field-error">
-                            {fieldErrors.password}
+                            {t(fieldErrors.password)}
                         </span>
                     )}
                 </label>
 
                 <button type="submit" className="login__submit">
-                    Sign in
+                    {t("auth:submit")}
                 </button>
             </form>
         </div>

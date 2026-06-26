@@ -1,0 +1,31 @@
+{
+    "appName": "CineView",
+    "nav": {
+        "home": "Inicio",
+        "watchlist": "Mi lista",
+        "collections": "Colecciones",
+        "settings": "Ajustes"
+    },
+    "search": {
+        "navbarPlaceholder": "Buscar películas, series, personas..."
+    },
+    "actions": {
+        "logout": "Cerrar sesión",
+        "clear": "Borrar",
+        "playTrailer": "▶ Ver tráiler",
+        "closeTrailer": "Cerrar tráiler"
+    },
+    "state": {
+        "loading": "Cargando…",
+        "empty": "Nada que mostrar.",
+        "failed": "Error al cargar.",
+        "failedWith": "Error al cargar. {{message}}",
+        "sectionFailed": "No se pudo cargar esta sección.",
+        "noImage": "Sin imagen",
+        "noPhoto": "Sin foto"
+    },
+    "rating": "★ {{value}}",
+    "notFound": {
+        "title": "404 - Página no encontrada"
+    }
+}

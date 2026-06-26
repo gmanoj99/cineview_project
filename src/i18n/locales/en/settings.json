@@ -1,0 +1,21 @@
+{
+    "title": "Settings",
+    "language": {
+        "label": "Language",
+        "en": "English",
+        "es": "Spanish"
+    },
+    "region": {
+        "label": "Region"
+    },
+    "theme": {
+        "label": "Theme",
+        "light": "Light",
+        "dark": "Dark",
+        "toggle": "Toggle theme"
+    },
+    "account": {
+        "label": "Account",
+        "logout": "Logout"
+    }
+}

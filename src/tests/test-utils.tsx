@@ -3,14 +3,14 @@ import type { ReactElement } from "react";
 import { MemoryRouter } from "react-router-dom";
 
 import { AuthProvider } from "../Auth/ui/AuthContext";
+import { PreferencesProvider } from "../Preferences/state/PreferencesContext";
 
-export function renderWithProviders(
-    ui: ReactElement,
-    { route = "/" } = {}
-) {
+export function renderWithProviders(ui: ReactElement, { route = "/" } = {}) {
     return render(
-        <AuthProvider>
-            <MemoryRouter initialEntries={[route]}>{ui}</MemoryRouter>
-        </AuthProvider>
+        <PreferencesProvider>
+            <AuthProvider>
+                <MemoryRouter initialEntries={[route]}>{ui}</MemoryRouter>
+            </AuthProvider>
+        </PreferencesProvider>
     );
 }

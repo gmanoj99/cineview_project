@@ -1,0 +1,21 @@
+{
+    "title": "Ajustes",
+    "language": {
+        "label": "Idioma",
+        "en": "Inglés",
+        "es": "Español"
+    },
+    "region": {
+        "label": "Región"
+    },
+    "theme": {
+        "label": "Tema",
+        "light": "Claro",
+        "dark": "Oscuro",
+        "toggle": "Cambiar tema"
+    },
+    "account": {
+        "label": "Cuenta",
+        "logout": "Cerrar sesión"
+    }
+}

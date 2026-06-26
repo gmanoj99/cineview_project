@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 import { tmdbService } from "../../../Common/data/tmdbService";
 import { useAsync } from "../../../Common/ui/hooks/useAsync";
@@ -16,6 +17,7 @@ import {
 import "../../../styles/browse.css";
 
 export default function SearchPage() {
+    const { t } = useTranslation();
     const [searchParams, setSearchParams] = useSearchParams();
     const queryParam = searchParams.get("q") ?? "";
 
@@ -23,12 +25,10 @@ export default function SearchPage() {
     const [history, setHistory] = useState<string[]>(() => getHistory());
     const debounced = useDebouncedValue(query.trim(), 400);
 
-    // Sync the input when the URL query changes (e.g. navbar search).
     useEffect(() => {
         setQuery(queryParam);
     }, [queryParam]);
 
-    // Keep the URL in sync with the debounced term (shareable / consistent).
     useEffect(() => {
         const current = searchParams.get("q") ?? "";
         if (debounced !== current) {
@@ -69,7 +69,7 @@ export default function SearchPage() {
             <input
                 className="search__input"
                 type="search"
-                placeholder="Search movies, TV shows, people…"
+                placeholder={t("search:placeholder")}
                 value={query}
                 onChange={(event) => setQuery(event.target.value)}
                 autoFocus
@@ -77,7 +77,7 @@ export default function SearchPage() {
 
             {history.length > 0 && (
                 <div className="search__history">
-                    <span>Recent:</span>
+                    <span>{t("search:recent")}</span>
                     {history.map((term) => (
                         <button
                             key={term}
@@ -96,32 +96,35 @@ export default function SearchPage() {
                             setHistory([]);
                         }}
                     >
-                        Clear
+                        {t("search:clear")}
                     </button>
                 </div>
             )}
 
             {debounced.length < 2 ? (
-                <p className="state state--empty">
-                    Type at least 2 characters to search.
-                </p>
+                <p className="state state--empty">{t("search:typeAtLeast")}</p>
             ) : (
-                <SectionBoundary label="Search failed.">
+                <SectionBoundary label={t("search:failed")}>
                     <AsyncSection
                         state={state}
                         isEmpty={(data) => data.results.length === 0}
-                        emptyLabel="No results."
+                        emptyLabel={t("search:noResults")}
                     >
                         {() => (
                             <>
                                 {grouped.movie.length > 0 && (
                                     <section className="row">
-                                        <h2 className="row__title">Movies</h2>
+                                        <h2 className="row__title">
+                                            {t("search:sections.movies")}
+                                        </h2>
                                         <div className="row__track">
                                             {grouped.movie.map((item) => (
                                                 <MovieCard
                                                     key={item.id}
-                                                    item={{ ...item, media_type: "movie" }}
+                                                    item={{
+                                                        ...item,
+                                                        media_type: "movie",
+                                                    }}
                                                 />
                                             ))}
                                         </div>
@@ -129,12 +132,17 @@ export default function SearchPage() {
                                 )}
                                 {grouped.tv.length > 0 && (
                                     <section className="row">
-                                        <h2 className="row__title">TV Shows</h2>
+                                        <h2 className="row__title">
+                                            {t("search:sections.tv")}
+                                        </h2>
                                         <div className="row__track">
                                             {grouped.tv.map((item) => (
                                                 <MovieCard
                                                     key={item.id}
-                                                    item={{ ...item, media_type: "tv" }}
+                                                    item={{
+                                                        ...item,
+                                                        media_type: "tv",
+                                                    }}
                                                 />
                                             ))}
                                         </div>
@@ -142,7 +150,9 @@ export default function SearchPage() {
                                 )}
                                 {grouped.person.length > 0 && (
                                     <section className="row">
-                                        <h2 className="row__title">People</h2>
+                                        <h2 className="row__title">
+                                            {t("search:sections.people")}
+                                        </h2>
                                         <div className="row__track">
                                             {grouped.person.map((person) => {
                                                 const photo = posterUrl(
@@ -157,12 +167,16 @@ export default function SearchPage() {
                                                             {photo ? (
                                                                 <img
                                                                     src={photo}
-                                                                    alt={person.name}
+                                                                    alt={
+                                                                        person.name
+                                                                    }
                                                                     loading="lazy"
                                                                 />
                                                             ) : (
                                                                 <div className="movie-card__placeholder">
-                                                                    No image
+                                                                    {t(
+                                                                        "common:state.noImage"
+                                                                    )}
                                                                 </div>
                                                             )}
                                                         </div>

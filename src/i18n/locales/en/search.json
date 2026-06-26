@@ -1,0 +1,15 @@
+{
+    "placeholder": "Search movies, TV shows, people…",
+    "recent": "Recent:",
+    "clear": "Clear",
+    "typeAtLeast": "Type at least 2 characters to search.",
+    "failed": "Search failed.",
+    "noResults": "No results.",
+    "sections": {
+        "movies": "Movies",
+        "tv": "TV Shows",
+        "people": "People"
+    },
+    "resultCount_one": "{{count}} result",
+    "resultCount_other": "{{count}} results"
+}

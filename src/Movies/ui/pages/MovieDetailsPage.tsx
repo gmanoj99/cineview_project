@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 import { backdropUrl } from "../../../Common/core/images";
 import { tmdbService } from "../../../Common/data/tmdbService";
@@ -13,16 +14,25 @@ import "../../../styles/browse.css";
 
 export default function MovieDetailsPage() {
     const { movieId } = useParams();
+    const { t } = useTranslation();
     const id = Number(movieId);
     const [showTrailer, setShowTrailer] = useState(false);
 
     const state = useAsync(() => tmdbService.getMovieDetails(id), [id]);
 
     if (Number.isNaN(id)) {
-        return <div className="state state--error">Invalid movie id.</div>;
+        return (
+            <div className="state state--error">
+                {t("movies:details.invalidId")}
+            </div>
+        );
     }
     if (state.status === "loading") {
-        return <div className="state state--loading">Loading…</div>;
+        return (
+            <div className="state state--loading">
+                {t("common:state.loading")}
+            </div>
+        );
     }
     if (state.status === "error") {
         const notFound =
@@ -30,14 +40,17 @@ export default function MovieDetailsPage() {
         return (
             <div className="state state--error">
                 {notFound
-                    ? "Movie not found (404)."
-                    : `Failed to load. ${state.error.message}`}
+                    ? t("movies:details.notFound")
+                    : t("common:state.failedWith", {
+                          message: state.error.message,
+                      })}
             </div>
         );
     }
 
     const movie = state.data;
     const backdrop = backdropUrl(movie.backdrop_path);
+    const releaseDate = movie.release_date ? new Date(movie.release_date) : null;
     const trailer = movie.videos?.results.find(
         (v) => v.site === "YouTube" && v.type === "Trailer"
     );
@@ -46,14 +59,28 @@ export default function MovieDetailsPage() {
         <div className="detail">
             <section
                 className="detail__hero"
-                style={backdrop ? { backgroundImage: `url(${backdrop})` } : undefined}
+                style={
+                    backdrop
+                        ? { backgroundImage: `url(${backdrop})` }
+                        : undefined
+                }
             >
                 <div className="detail__hero-overlay">
                     <h1>{movie.title}</h1>
                     <p className="detail__meta">
-                        ★ {movie.vote_average?.toFixed(1) ?? "—"}
-                        {movie.runtime ? ` · ${movie.runtime} min` : ""}
-                        {movie.release_date ? ` · ${movie.release_date}` : ""}
+                        {t("common:rating", {
+                            value: movie.vote_average?.toFixed(1) ?? "—",
+                        })}
+                        {movie.runtime
+                            ? ` · ${t("movies:details.runtime", {
+                                  count: movie.runtime,
+                              })}`
+                            : ""}
+                        {releaseDate
+                            ? ` · ${t("movies:releaseDate", {
+                                  date: releaseDate,
+                              })}`
+                            : ""}
                     </p>
                     <p className="detail__genres">
                         {movie.genres?.map((g) => g.name).join(", ")}
@@ -65,19 +92,19 @@ export default function MovieDetailsPage() {
                             className="hero__cta"
                             onClick={() => setShowTrailer(true)}
                         >
-                            ▶ Play Trailer
+                            {t("common:actions.playTrailer")}
                         </button>
                     )}
                 </div>
             </section>
 
-            <SectionBoundary label="Cast failed to load.">
-                <h2 className="row__title">Cast</h2>
+            <SectionBoundary label={t("movies:details.castFailed")}>
+                <h2 className="row__title">{t("movies:details.cast")}</h2>
                 <CastCarousel cast={movie.credits?.cast ?? []} />
             </SectionBoundary>
 
-            <SectionBoundary label="Similar failed to load.">
-                <h2 className="row__title">Similar</h2>
+            <SectionBoundary label={t("movies:details.similarFailed")}>
+                <h2 className="row__title">{t("movies:details.similar")}</h2>
                 <div className="row__track">
                     {(movie.similar?.results ?? []).map((item) => (
                         <MovieCard
@@ -88,8 +115,12 @@ export default function MovieDetailsPage() {
                 </div>
             </SectionBoundary>
 
-            <SectionBoundary label="Recommendations failed to load.">
-                <h2 className="row__title">Recommended</h2>
+            <SectionBoundary
+                label={t("movies:details.recommendationsFailed")}
+            >
+                <h2 className="row__title">
+                    {t("movies:details.recommended")}
+                </h2>
                 <div className="row__track">
                     {(movie.recommendations?.results ?? []).map((item) => (
                         <MovieCard

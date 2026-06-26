@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 import { posterUrl } from "../../core/images";
 import type { MediaItem } from "../../data/tmdbSchemas";
@@ -14,7 +15,8 @@ export default function MovieCard({
     isInWatchlist = false,
     onToggleWatchlist,
 }: MovieCardProps) {
-    const title = item.title ?? item.name ?? "Untitled";
+    const { t } = useTranslation();
+    const title = item.title ?? item.name ?? t("movies:card.untitled");
     const poster = posterUrl(item.poster_path);
     const rating = item.vote_average ? item.vote_average.toFixed(1) : "—";
     const to = item.media_type === "tv" ? `/tv/${item.id}` : `/movie/${item.id}`;
@@ -26,13 +28,16 @@ export default function MovieCard({
                     {poster ? (
                         <img src={poster} alt={title} loading="lazy" />
                     ) : (
-                        <div className="movie-card__placeholder">No image</div>
+                        <div className="movie-card__placeholder">
+                            {t("common:state.noImage")}
+                        </div>
                     )}
-                    <span className="movie-card__rating">★ {rating}</span>
+                    <span className="movie-card__rating">
+                        {t("common:rating", { value: rating })}
+                    </span>
                 </div>
                 <p className="movie-card__title">{title}</p>
             </Link>
-            {/* Watchlist toggle is a placeholder — wired in Milestone 5 */}
             <button
                 type="button"
                 className={
@@ -42,9 +47,11 @@ export default function MovieCard({
                 }
                 onClick={onToggleWatchlist}
                 disabled={!onToggleWatchlist}
-                aria-label="Toggle watchlist"
+                aria-label={t("movies:card.toggle")}
             >
-                {isInWatchlist ? "✓ In list" : "+ Watchlist"}
+                {isInWatchlist
+                    ? t("movies:card.added")
+                    : t("movies:card.add")}
             </button>
         </div>
     );

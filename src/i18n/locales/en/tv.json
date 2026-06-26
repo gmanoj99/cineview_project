@@ -1,0 +1,17 @@
+{
+    "details": {
+        "seasonsHeading": "Seasons",
+        "seasonCount_one": "{{count}} season",
+        "seasonCount_other": "{{count}} seasons",
+        "invalidId": "Invalid show id.",
+        "notFound": "Show not found (404)."
+    },
+    "season": {
+        "failed": "Season failed to load.",
+        "noEpisodes": "No episodes found.",
+        "markWatched": "Mark episode {{number}} watched",
+        "episodeCount_one": "{{count}} episode",
+        "episodeCount_other": "{{count}} episodes",
+        "aired": "Aired {{date, datetime(dateStyle:medium)}}"
+    }
+}

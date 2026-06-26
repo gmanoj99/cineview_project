@@ -1,0 +1,31 @@
+{
+    "appName": "CineView",
+    "nav": {
+        "home": "Home",
+        "watchlist": "Watchlist",
+        "collections": "Collections",
+        "settings": "Settings"
+    },
+    "search": {
+        "navbarPlaceholder": "Search movies, shows, people..."
+    },
+    "actions": {
+        "logout": "Logout",
+        "clear": "Clear",
+        "playTrailer": "▶ Play Trailer",
+        "closeTrailer": "Close trailer"
+    },
+    "state": {
+        "loading": "Loading…",
+        "empty": "Nothing to show.",
+        "failed": "Failed to load.",
+        "failedWith": "Failed to load. {{message}}",
+        "sectionFailed": "This section failed to load.",
+        "noImage": "No image",
+        "noPhoto": "No photo"
+    },
+    "rating": "★ {{value}}",
+    "notFound": {
+        "title": "404 - Page Not Found"
+    }
+}

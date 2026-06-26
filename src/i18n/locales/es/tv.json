@@ -1,0 +1,17 @@
+{
+    "details": {
+        "seasonsHeading": "Temporadas",
+        "seasonCount_one": "{{count}} temporada",
+        "seasonCount_other": "{{count}} temporadas",
+        "invalidId": "Id de serie inválido.",
+        "notFound": "Serie no encontrada (404)."
+    },
+    "season": {
+        "failed": "No se pudo cargar la temporada.",
+        "noEpisodes": "No se encontraron episodios.",
+        "markWatched": "Marcar episodio {{number}} como visto",
+        "episodeCount_one": "{{count}} episodio",
+        "episodeCount_other": "{{count}} episodios",
+        "aired": "Emitido el {{date, datetime(dateStyle:medium)}}"
+    }
+}

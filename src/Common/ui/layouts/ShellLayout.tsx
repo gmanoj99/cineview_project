@@ -1,19 +1,24 @@
 import { useState } from "react";
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
+import { observer } from "mobx-react-lite";
+import { useTranslation } from "react-i18next";
 
 import { useAuth } from "../../../Auth/ui/AuthContext";
+import { usePreferences } from "../../../Preferences/state/PreferencesContext";
 import { ROUTES } from "../../../router/routes";
 import "./shell.css";
 
 const NAV_LINKS = [
-    { to: ROUTES.HOME, label: "Home" },
-    { to: ROUTES.WATCHLIST, label: "Watchlist" },
-    { to: ROUTES.COLLECTIONS, label: "Collections" },
-    { to: ROUTES.SETTINGS, label: "Settings" },
+    { to: ROUTES.HOME, key: "nav.home" },
+    { to: ROUTES.WATCHLIST, key: "nav.watchlist" },
+    { to: ROUTES.COLLECTIONS, key: "nav.collections" },
+    { to: ROUTES.SETTINGS, key: "nav.settings" },
 ];
 
-export default function ShellLayout() {
+function ShellLayout() {
     const { user, logout } = useAuth();
+    const prefs = usePreferences();
+    const { t } = useTranslation();
     const navigate = useNavigate();
     const [searchTerm, setSearchTerm] = useState("");
 
@@ -38,7 +43,7 @@ export default function ShellLayout() {
         <div className="shell">
             <header className="navbar">
                 <NavLink to={ROUTES.HOME} className="navbar__logo">
-                    CineView
+                    {t("common:appName")}
                 </NavLink>
 
                 <nav className="navbar__links">
@@ -53,7 +58,7 @@ export default function ShellLayout() {
                                     : "navbar__link"
                             }
                         >
-                            {link.label}
+                            {t(`common:${link.key}`)}
                         </NavLink>
                     ))}
                 </nav>
@@ -61,22 +66,35 @@ export default function ShellLayout() {
                 <form className="navbar__search" onSubmit={handleSearchSubmit}>
                     <input
                         type="search"
-                        placeholder="Search movies, shows, people..."
+                        placeholder={t("common:search.navbarPlaceholder")}
                         value={searchTerm}
                         onChange={(event) => setSearchTerm(event.target.value)}
-                        aria-label="Global search"
+                        aria-label={t("common:search.navbarPlaceholder")}
                     />
                 </form>
 
                 <div className="navbar__actions">
-                    {/* Language switcher placeholder — wired in Milestone 4 */}
                     <button
                         type="button"
                         className="navbar__lang"
-                        disabled
-                        title="Language switcher (coming soon)"
+                        onClick={() =>
+                            prefs.setLanguage(
+                                prefs.language === "en" ? "es" : "en"
+                            )
+                        }
+                        title={t("settings:language.label")}
                     >
-                        EN
+                        {prefs.language.toUpperCase()}
+                    </button>
+
+                    <button
+                        type="button"
+                        className="navbar__theme"
+                        onClick={() => prefs.toggleTheme()}
+                        aria-label={t("settings:theme.toggle")}
+                        title={t("settings:theme.toggle")}
+                    >
+                        {prefs.theme === "dark" ? "☀️" : "🌙"}
                     </button>
 
                     <span className="navbar__avatar" title={user?.username}>
@@ -88,14 +106,20 @@ export default function ShellLayout() {
                         className="navbar__logout"
                         onClick={handleLogout}
                     >
-                        Logout
+                        {t("common:actions.logout")}
                     </button>
                 </div>
             </header>
 
             <main className="shell__content">
-                <Outlet />
+                {/* Remounting on language change forces every page to re-fetch
+                    from TMDB with the new `language` parameter. */}
+                <div key={prefs.language} className="shell__page">
+                    <Outlet />
+                </div>
             </main>
         </div>
     );
 }
+
+export default observer(ShellLayout);

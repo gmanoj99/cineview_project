@@ -1,0 +1,10 @@
+{
+    "watchlist": {
+        "title": "Mi lista",
+        "empty": "Tu lista está vacía."
+    },
+    "collections": {
+        "title": "Colecciones",
+        "empty": "Aún no hay colecciones."
+    }
+}

@@ -1,0 +1,33 @@
+{
+    "rows": {
+        "trending": "Tendencias",
+        "popular": "Populares",
+        "topRated": "Mejor valoradas",
+        "upcoming": "Próximos estrenos",
+        "filtered": "Filtradas"
+    },
+    "genre": {
+        "all": "Todas"
+    },
+    "empty": "No se encontraron títulos.",
+    "rowFailed": "No se pudo cargar {{title}}.",
+    "releaseDate": "{{date, datetime(dateStyle:medium)}}.",
+    "details": {
+        "runtime": "{{count}} min",
+        "cast": "Reparto",
+        "similar": "Similares",
+        "recommended": "Recomendadas",
+        "noCast": "Sin información de reparto.",
+        "castFailed": "No se pudo cargar el reparto.",
+        "similarFailed": "No se pudieron cargar las similares.",
+        "recommendationsFailed": "No se pudieron cargar las recomendaciones.",
+        "invalidId": "Id de película inválido.",
+        "notFound": "Película no encontrada (404)."
+    },
+    "card": {
+        "untitled": "Sin título",
+        "add": "+ Mi lista",
+        "added": "✓ En la lista",
+        "toggle": "Alternar mi lista"
+    }
+}

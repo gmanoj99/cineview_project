@@ -1,4 +1,5 @@
 import { Link, Outlet, useParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 import { backdropUrl, posterUrl } from "../../../Common/core/images";
 import { tmdbService } from "../../../Common/data/tmdbService";
@@ -8,14 +9,21 @@ import "../../../styles/browse.css";
 
 export default function TVShowDetailsPage() {
     const { tvId } = useParams();
+    const { t } = useTranslation();
     const id = Number(tvId);
     const state = useAsync(() => tmdbService.getTvDetails(id), [id]);
 
     if (Number.isNaN(id)) {
-        return <div className="state state--error">Invalid show id.</div>;
+        return (
+            <div className="state state--error">{t("tv:details.invalidId")}</div>
+        );
     }
     if (state.status === "loading") {
-        return <div className="state state--loading">Loading…</div>;
+        return (
+            <div className="state state--loading">
+                {t("common:state.loading")}
+            </div>
+        );
     }
     if (state.status === "error") {
         const notFound =
@@ -23,8 +31,10 @@ export default function TVShowDetailsPage() {
         return (
             <div className="state state--error">
                 {notFound
-                    ? "Show not found (404)."
-                    : `Failed to load. ${state.error.message}`}
+                    ? t("tv:details.notFound")
+                    : t("common:state.failedWith", {
+                          message: state.error.message,
+                      })}
             </div>
         );
     }
@@ -36,14 +46,22 @@ export default function TVShowDetailsPage() {
         <div className="detail">
             <section
                 className="detail__hero"
-                style={backdrop ? { backgroundImage: `url(${backdrop})` } : undefined}
+                style={
+                    backdrop
+                        ? { backgroundImage: `url(${backdrop})` }
+                        : undefined
+                }
             >
                 <div className="detail__hero-overlay">
                     <h1>{show.name}</h1>
                     <p className="detail__meta">
-                        ★ {show.vote_average?.toFixed(1) ?? "—"}
+                        {t("common:rating", {
+                            value: show.vote_average?.toFixed(1) ?? "—",
+                        })}
                         {show.number_of_seasons
-                            ? ` · ${show.number_of_seasons} seasons`
+                            ? ` · ${t("tv:details.seasonCount", {
+                                  count: show.number_of_seasons,
+                              })}`
                             : ""}
                     </p>
                     <p className="detail__genres">
@@ -53,7 +71,7 @@ export default function TVShowDetailsPage() {
                 </div>
             </section>
 
-            <h2 className="row__title">Seasons</h2>
+            <h2 className="row__title">{t("tv:details.seasonsHeading")}</h2>
             <div className="row__track">
                 {(show.seasons ?? []).map((season) => {
                     const poster = posterUrl(season.poster_path);
@@ -65,10 +83,14 @@ export default function TVShowDetailsPage() {
                         >
                             <div className="movie-card__poster">
                                 {poster ? (
-                                    <img src={poster} alt={season.name} loading="lazy" />
+                                    <img
+                                        src={poster}
+                                        alt={season.name}
+                                        loading="lazy"
+                                    />
                                 ) : (
                                     <div className="movie-card__placeholder">
-                                        No image
+                                        {t("common:state.noImage")}
                                     </div>
                                 )}
                             </div>
@@ -78,7 +100,6 @@ export default function TVShowDetailsPage() {
                 })}
             </div>
 
-            {/* Nested season detail renders here */}
             <Outlet />
         </div>
     );

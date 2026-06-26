@@ -1,0 +1,15 @@
+{
+    "placeholder": "Buscar películas, series, personas…",
+    "recent": "Recientes:",
+    "clear": "Borrar",
+    "typeAtLeast": "Escribe al menos 2 caracteres para buscar.",
+    "failed": "La búsqueda falló.",
+    "noResults": "Sin resultados.",
+    "sections": {
+        "movies": "Películas",
+        "tv": "Series",
+        "people": "Personas"
+    },
+    "resultCount_one": "{{count}} resultado",
+    "resultCount_other": "{{count}} resultados"
+}

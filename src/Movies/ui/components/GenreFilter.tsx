@@ -1,3 +1,5 @@
+import { useTranslation } from "react-i18next";
+
 import type { Genre } from "../../../Common/data/tmdbSchemas";
 
 interface GenreFilterProps {
@@ -11,18 +13,17 @@ export default function GenreFilter({
     activeGenreId,
     onSelect,
 }: GenreFilterProps) {
+    const { t } = useTranslation();
     return (
         <div className="genre-filter">
             <button
                 type="button"
                 className={
-                    activeGenreId === null
-                        ? "chip chip--active"
-                        : "chip"
+                    activeGenreId === null ? "chip chip--active" : "chip"
                 }
                 onClick={() => onSelect(null)}
             >
-                All
+                {t("movies:genre.all")}
             </button>
             {genres.map((genre) => (
                 <button
