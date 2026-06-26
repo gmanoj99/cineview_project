@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 
 import { tmdbService } from "../../../Common/data/tmdbService";
 import { useAsync } from "../../../Common/ui/hooks/useAsync";
@@ -15,9 +16,28 @@ import {
 import "../../../styles/browse.css";
 
 export default function SearchPage() {
-    const [query, setQuery] = useState("");
+    const [searchParams, setSearchParams] = useSearchParams();
+    const queryParam = searchParams.get("q") ?? "";
+
+    const [query, setQuery] = useState(queryParam);
     const [history, setHistory] = useState<string[]>(() => getHistory());
     const debounced = useDebouncedValue(query.trim(), 400);
+
+    // Sync the input when the URL query changes (e.g. navbar search).
+    useEffect(() => {
+        setQuery(queryParam);
+    }, [queryParam]);
+
+    // Keep the URL in sync with the debounced term (shareable / consistent).
+    useEffect(() => {
+        const current = searchParams.get("q") ?? "";
+        if (debounced !== current) {
+            setSearchParams(debounced ? { q: debounced } : {}, {
+                replace: true,
+            });
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [debounced]);
 
     const state = useAsync(async () => {
         if (debounced.length < 2) {

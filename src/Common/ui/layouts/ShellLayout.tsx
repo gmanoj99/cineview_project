@@ -19,7 +19,12 @@ export default function ShellLayout() {
 
     const handleSearchSubmit = (event: React.FormEvent) => {
         event.preventDefault();
-        navigate(ROUTES.SEARCH);
+        const term = searchTerm.trim();
+        if (!term) {
+            navigate(ROUTES.SEARCH);
+            return;
+        }
+        navigate(`${ROUTES.SEARCH}?q=${encodeURIComponent(term)}`);
     };
 
     const handleLogout = () => {
